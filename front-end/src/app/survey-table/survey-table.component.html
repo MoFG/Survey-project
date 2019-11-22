@@ -1,7 +1,7 @@
 <div class="wrapper fadeInDown">
     <div id="surveyFormContent">
         <form #surveySubmitForm="ngForm">
-            <p>{{ surveyListService.selectedSurveyItem._id }}</p>
+            <input type="text" name="_id" #_id="ngModel" [(ngModel)]="surveyListService.selectedSurveyItem._id">
             <div class="question1">
                 <p *ngFor="let surveyItem of surveyListService.surveyLists"></p>
                 <label>

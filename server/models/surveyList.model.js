@@ -1,12 +1,14 @@
 const mongoose = require('mongoose');
 
 var surveyListSchema = new mongoose.Schema({
-    personId: String,
     questions: [{
-        questionId: String,
         offeredAnswer: String
     }],
     description: {
+        subjectCode: String,
+        subjecName: String,
+        className: String,
+        classId: String,
         surveyName: String,
         lecturer: String
     },

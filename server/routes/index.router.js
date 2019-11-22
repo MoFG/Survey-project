@@ -15,7 +15,9 @@ router.get('/userProfile', jwtHelper.verifyJwtToken, ctrlUser.userProfile);
 //survey list 
 router.get('/surveyListing', ctrlSurveyList.surveyListing);
 router.post('/createNewSurveyItem', ctrlSurveyList.createNewSurveyItem);
-router.get('/getSurveyTable', ctrlSurveyList.getSurveyTable);
+router.get('/:surveyId', ctrlSurveyList.getSurveyId);
+router.put('/:surveyId', ctrlSurveyList.editSurveyId);
+router.delete('/:surveyId', ctrlSurveyList.deleteSurveyId);
 
 //question list 
 router.get('/questionListing', ctrlQuestionList.questionListing);
