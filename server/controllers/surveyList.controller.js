@@ -4,6 +4,8 @@ const _ = require('lodash');
 
 const SurveyList = mongoose.model('SurveyList');
 
+var ObjectId = require('mongoose').Types.ObjectId;
+
 //create a new survey for showing survey lists
 module.exports.createNewSurveyItem = (req, res, next) => {
     var surveyList = new SurveyList();
@@ -31,12 +33,46 @@ module.exports.surveyListing = (req, res) => {
     })
 }
 
-module.exports.getSurveyTable = (req, res, next) => {
-    SurveyList.findOne({ _id: req._id }, (err, surveyTableItem) => {
-        if (!surveyTableItem) {
-            return res.status(400).json({ status: false, message: 'Survey record not found.' });
+module.exports.getSurveyId = (req, res) => {
+    if (!ObjectId.isValid(req.params.surveyId))
+        return res.status(400).send(`No records with given id: ${req.params.surveyId}`);
+    SurveyList.findById(req.params.surveyId, (err, doc) => {
+        if (!err) {
+            res.send(doc);
         } else {
-            return res.status(200).json({ status: true, surveyTableItem: _.pick(surveyTableItem, ['_id', 'questions', 'description', 'startDate', 'endDate']) });
+            console.log('Error in getting Survey: ' + JSON.stringify(err, undefined, 2));
         }
     })
+}
+
+module.exports.editSurveyId = (req, res) => {
+    if (!ObjectId.isValid(req.params.id))
+        return res.status(400).send(`No records with given id: ${req.params.id}`);
+    var surveyItem = {
+        questions: req.body.questions,
+        description: req.body.description,
+        startDate: req.body.startDate,
+        endDate: req.body.endDate,
+        isOpen: req.body.isOpen
+    }
+    SurveyList.update({
+        'questions._id': req.body.mainId,
+        'description._id': req.body.subId
+    }, { $set: surveyItem }, { new: true }, (err, doc) => {
+        if (!err)
+            res.send(doc);
+        else {
+            console.log('Error in Survey update: ' + JSON.stringify(err, undefined, 2));
+        }
+    })
+}
+
+module.exports.deleteSurveyId = (req, res) => {
+    if (!ObjectId.isValid(req.params.id))
+        return res.status(400).send(`No records with given id: ${req.params.id}`);
+    SurveyList.findByIdAndRemove(req.params.id, (err, doc) => {
+        if (!err) { res.send(doc); } else {
+            console.log('Error in Survey delete: ' + JSON.stringify(err, undefined, 2));
+        }
+    });
 }

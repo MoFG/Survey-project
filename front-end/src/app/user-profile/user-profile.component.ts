@@ -17,6 +17,7 @@ export class UserProfileComponent implements OnInit {
 
   userDetails;
   isOpen: boolean;
+  surveyDetails;
 
   constructor(private userService: UserService, private router: Router, private surveyListService: SurveyListService) { }
 
@@ -28,15 +29,6 @@ export class UserProfileComponent implements OnInit {
       err => {}
     )
     this.refreshSurveyList();
-    this.surveyListService.selectedSurveyItem = {
-      _id: "",
-      personId: "",
-      questions: [],
-      description: {},
-      startDate: "",
-      endDate: "",
-      isOpen: null
-    }
   }
 
   onLogout() {
@@ -53,12 +45,21 @@ export class UserProfileComponent implements OnInit {
 
   refreshSurveyList() {
     this.surveyListService.getSurveyList().subscribe((res) => {
-      this.surveyListService.surveyLists = res as SurveyList[];
+      this.surveyListService.surveyLists = res as SurveyList[];    
     })
   }
 
-  onSurveyTable(surveyItem: SurveyList) {
-    this.router.navigate[('/surveytable')];
+  onSurveyId(surveyList: SurveyList) {
+    this.surveyListService.selectedSurveyItem = surveyList;
+    console.log(surveyList);
     this.userDetails = !this.userDetails;
+    
+    this.surveyListService.getSurveyId(surveyList).subscribe(
+      res => {
+        this.surveyListService.selectedSurveyItem.questions = res['questions'];       
+        console.log(this.surveyListService.selectedSurveyItem.questions);
+         
+      }
+    )
   }
 }

@@ -17,7 +17,6 @@ export class SurveyTableComponent implements OnInit {
   ngOnInit() {
     this.surveyListService.selectedSurveyItem = {
       _id: "",
-      personId: "",
       questions: [],
       description: {},
       startDate: "",

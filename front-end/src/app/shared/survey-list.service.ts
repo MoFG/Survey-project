@@ -3,7 +3,6 @@ import { HttpClient } from '@angular/common/http';
 
 import { environment } from '../../environments/environment';
 import { SurveyList } from './survey-list.model';
-import { User } from './user.model';
 
 @Injectable({
   providedIn: 'root'
@@ -22,7 +21,7 @@ export class SurveyListService {
     return this.http.get(environment.apiBaseUrl + '/surveyListing');
   }
 
-  getSurveyTable() {
-    return this.http.get(environment.apiBaseUrl + '/getSurveyTable');
+  getSurveyId(surveyList: SurveyList) {
+    return this.http.get(environment.apiBaseUrl + `/${surveyList._id}`);
   }
 }
