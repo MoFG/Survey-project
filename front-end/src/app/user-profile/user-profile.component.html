@@ -1,0 +1,49 @@
+<div style="display: flex;">
+    <div class="wrapper-30 fadeInDown">
+        <table *ngIf="userDetails" class="table-fill">
+            <thead>
+                <tr>
+                    <th colspan="2" class="text-center">User Profile</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>First Name</td>
+                    <td>{{ userDetails.fullName.split(' ')[0] }}</td>
+                </tr>
+                <tr>
+                    <td>Last Name</td>
+                    <td>{{ userDetails.fullName.split(' ')[1] }}</td>
+                </tr>
+                <tr>
+                    <td>Email</td>
+                    <td>{{ userDetails.email }}</td>
+                </tr>
+                <tr>
+                    <td colspan="2" class="text-center">
+                        <input type="button" (click)="onLogout()" value="Logout" />
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="wrapper-70 fadeInDown">
+        <table *ngIf="userDetails" class="table-fill-right">
+            <thead>
+                <tr>
+                    <th class="text-center">Survey List</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="searchBox">
+                    <input type="text" name="search" placeholder="Search...">
+                </tr>
+                <tr *ngFor="let surveyList of surveyListService.surveyLists">
+                    <td (click)="onSurveyTable(surveyItem)">{{ surveyList.description.surveyName }} - {{ surveyList.description.lecturer }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<app-survey-table *ngIf="!userDetails"></app-survey-table>
